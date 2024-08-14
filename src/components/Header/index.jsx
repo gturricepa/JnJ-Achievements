@@ -23,7 +23,8 @@ export const Header = () =>{
         <Styled.Header>
           <ReactCountryFlag
             style={{
-              padding: "1.5rem",
+              marginRight:"10px",
+              marginTop:"10px",
               width: "3em",
               height: "2em",
               alignSelf: "center",
