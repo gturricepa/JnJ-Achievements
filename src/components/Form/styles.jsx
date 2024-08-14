@@ -13,9 +13,18 @@ height: 400px;
 
 export const Input = styled.input`
 width: 80%;
-height: 2.5rem;
+height: 3rem;
 border: 1px solid #333333;
 border-radius: 5px;
+font-family: 'Roboto';
+padding: 8px;
+box-sizing: border-box; 
+
+&::placeholder {
+    font-family: 'Roboto';
+ 
+    font-size: "1rem"
+  }
 
 `
 
@@ -27,6 +36,7 @@ width: 80%;
 height: 3rem;
 border: 1px solid #333333;
 border-radius: 5px;
+margin-top: 25px;
 
 
 

@@ -76,8 +76,6 @@ export const Form = () => {
                 value={password}
                 onChange={handlePasswordChange}
             />
-            <Styled.BtnLogin onClick={handleLogin}>Login</Styled.BtnLogin>
-
             <Styled.AutoComplete>
             <Autocomplete
                 value={autocompleteValue}
@@ -86,6 +84,7 @@ export const Form = () => {
                 renderInput={(params) => <TextField {...params} label="Country" />}
             />
             </Styled.AutoComplete>
+            <Styled.BtnLogin onClick={handleLogin}>Login</Styled.BtnLogin>
             <p>{message}</p>
         </Styled.Holder>
     );
