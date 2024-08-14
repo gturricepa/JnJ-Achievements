@@ -1,19 +1,24 @@
 import React from 'react';
 import * as Styled from './styles';
 import { Autocomplete, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { setName } from '../../state-management/userSlice';
+import { setCountry } from '../../state-management/userSlice';
+import { useDispatch } from 'react-redux';
+
 
 export const Form = () => {
-    // Estado para o valor do Autocomplete
     const [autocompleteValue, setAutocompleteValue] = React.useState(null);
-
-    // Estados para os valores dos campos de entrada
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [message, setMessage] = React.useState('');
+    const options = ['United States of America', 'Canada'];
 
-    // Opções para o Autocomplete
-    const options = ['United States of America'];
+    console.log(autocompleteValue)
+    const navigate = useNavigate(); 
+    const dispatch = useDispatch(); 
+  
 
-    // Manipuladores de eventos para os campos de entrada
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
     };
@@ -21,6 +26,30 @@ export const Form = () => {
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
+
+
+    const handleLogin =  async (event) =>{
+        event.preventDefault();
+        event.preventDefault();
+    try {
+      const response = await fetch('../../../public/data/access/access.json');
+      const data  = await response.json();
+      
+      const user = data.users.find(user => user.username === username && user.password === password);
+
+      if (user && autocompleteValue) {
+        dispatch(setName(user.name));
+        dispatch(setCountry(autocompleteValue))
+        navigate('/home');
+      } else {
+        setMessage('Wrong User/Pass or Country');
+      }
+    } catch (error) {
+        console.log(error)
+      setMessage('Fail to load data', error);
+    } 
+    }
+
 
     return (
         <Styled.Holder>
@@ -38,7 +67,7 @@ export const Form = () => {
                 value={password}
                 onChange={handlePasswordChange}
             />
-            <Styled.BtnLogin>Login</Styled.BtnLogin>
+            <Styled.BtnLogin onClick={handleLogin}>Login</Styled.BtnLogin>
 
             <Styled.AutoComplete>
             <Autocomplete
@@ -48,6 +77,7 @@ export const Form = () => {
                 renderInput={(params) => <TextField {...params} label="Country" />}
             />
             </Styled.AutoComplete>
+            <p>{message}</p>
         </Styled.Holder>
     );
 };
