@@ -2,8 +2,7 @@ import React from "react"
 import * as Styled from './styled' 
 import world from "../../assets/world.png";
 import logo from "../../assets/logo.png";
-
-import { Form } from "../Form";
+import { Form } from "../../components/Form";
 export const Login = () =>{
     return (
         <Styled.Holder2Lines>
