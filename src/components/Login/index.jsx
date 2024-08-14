@@ -10,8 +10,7 @@ export const Login = () =>{
             <Styled.Logo src={logo} alt="Logo" />
             <Styled.HolderTwoColluns>
                 <Styled.Left>
-
-                    <Form></Form>
+                <Form></Form>
                 </Styled.Left>
                 <Styled.Right> 
                     <Styled.WorldImg src={world} alt="World" />

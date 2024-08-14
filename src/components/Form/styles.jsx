@@ -40,11 +40,8 @@ cursor: pointer;
 export const AutoComplete = styled.div`
 width: 80%;
 height: 35px;
-
 `
 
 export const Name = styled.h1`
 color: #333333;
-
-
 `
