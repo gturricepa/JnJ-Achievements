@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
-  country: ''
+  country: '',
+  flag:''
 };
 
 const userSlice = createSlice({
@@ -14,9 +15,12 @@ const userSlice = createSlice({
     },
     setCountry(state, action) {
       state.country = action.payload;
+    },
+    setFlag(state, action) {
+      state.flag = action.payload;
     }
   }
 });
 
-export const { setName, setCountry } = userSlice.actions;
+export const { setName, setCountry, setFlag } = userSlice.actions;
 export default userSlice.reducer;

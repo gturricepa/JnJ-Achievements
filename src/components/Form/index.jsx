@@ -2,8 +2,7 @@ import React from 'react';
 import * as Styled from './styles';
 import { Autocomplete, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { setName } from '../../state-management/userSlice';
-import { setCountry } from '../../state-management/userSlice';
+import { setName, setCountry, setFlag } from '../../state-management/userSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -13,6 +12,15 @@ export const Form = () => {
     const [password, setPassword] = React.useState('');
     const [message, setMessage] = React.useState('');
     const options = ['United States of America', 'Canada'];
+
+
+    const selectFlag = (value) => {
+        console.log(value)
+      if(value === "United States of America"){
+        return "US"
+      }
+    }
+
 
     console.log(autocompleteValue)
     const navigate = useNavigate(); 
@@ -36,10 +44,11 @@ export const Form = () => {
       const data  = await response.json();
       
       const user = data.users.find(user => user.username === username && user.password === password);
-
+        
       if (user && autocompleteValue) {
         dispatch(setName(user.name));
         dispatch(setCountry(autocompleteValue))
+        dispatch(setFlag(selectFlag(autocompleteValue)))
         navigate('/home');
       } else {
         setMessage('Wrong User/Pass or Country');
