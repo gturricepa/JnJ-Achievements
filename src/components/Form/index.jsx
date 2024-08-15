@@ -11,18 +11,16 @@ export const Form = () => {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [message, setMessage] = React.useState('');
-    const options = ['United States of America', 'Canada'];
+    const options = ['United States of America', 'Canada', 'United Kingdom', 'Argelia'];
 
 
     const selectFlag = (value) => {
-        console.log(value)
+
       if(value === "United States of America"){
         return "US"
       }
     }
 
-
-    console.log(autocompleteValue)
     const navigate = useNavigate(); 
     const dispatch = useDispatch(); 
   

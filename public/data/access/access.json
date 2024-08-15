@@ -2,8 +2,8 @@
     "users": [
       {
         "username": "admin",
-        "password": "admineua",
-        "name":"EUA ADMIN"
+        "password": "adminusa",
+        "name":"USA ADMIN"
       }
     ]
   }

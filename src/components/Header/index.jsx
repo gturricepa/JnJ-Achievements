@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { setName, setCountry, setFlag } from '../../state-management/userSlice';
 import { useDispatch } from 'react-redux';
 import ReactCountryFlag from "react-country-flag";
+import logo from '../../assets/logo.png'
+
 
 export const Header = () =>{
     const navigate = useNavigate();
@@ -13,7 +15,6 @@ export const Header = () =>{
 
     const handleClick = () => {
 
-      console.log("lot")
       dispatch(setFlag(null));
       dispatch(setCountry(null));
       dispatch(setName(null))
@@ -21,6 +22,7 @@ export const Header = () =>{
     };
     return (
         <Styled.Header>
+            <Styled.Logo src={logo} alt='Logo' />
           <ReactCountryFlag
             style={{
               marginRight:"10px",

@@ -1,8 +1,15 @@
 import React from "react";
 import { Header } from "../../components/Header";
 import * as XLSX from 'xlsx';
-import { Subscriptions } from "../../components/Subscriptions";
 import * as Styled from './styles';
+import Skeleton from '@mui/material/Skeleton';
+import BarChartSharpIcon from '@mui/icons-material/BarChartSharp';
+import PeopleAltSharpIcon from '@mui/icons-material/PeopleAltSharp';
+import { TwoColumnsCard } from "../../components/Cards/TwoColumnsCard";
+import { Subscriptions } from "../Subscriptions";
+import { Charts } from "../../components/Charts";
+
+
 
 export const Home = () => {
   const [data, setData] = React.useState([]);
@@ -10,7 +17,10 @@ export const Home = () => {
   const [fleetOptions, setFleetOptions] = React.useState([]);
   const [legalEntityOptions, setLegalEntityOptions] = React.useState([]);
   const [selectedFleet, setSelectedFleet] = React.useState('All'); 
-  const [selectedLegalEntities, setSelectedLegalEntities] = React.useState(new Set()); 
+  const [selectedLegalEntities, setSelectedLegalEntities] = React.useState(new Set());
+  const [loading, setLoading] = React.useState(true);
+  const [sub, setSub] = React.useState(true)
+  const [over, setOver] = React.useState(false)
 
   React.useEffect(() => {
     const readXlsxFile = async () => {
@@ -26,20 +36,18 @@ export const Home = () => {
         setOriginalData(jsonData);
         setData(jsonData);
 
-
-        const fleets = jsonData.map(item => item.Fleet).filter(Boolean); //Unique value collun fleet 
+        const fleets = jsonData.map(item => item.Fleet).filter(Boolean);
         const uniqueFleets = [...new Set(fleets)];
         setFleetOptions(['All', ...uniqueFleets]);
 
-        
-        const legalEntities = jsonData.map(item => item['Legal Entity Name']).filter(Boolean);  //Unique value collun Legal Entity Name
+        const legalEntities = jsonData.map(item => item['Legal Entity Name']).filter(Boolean);
         const uniqueLegalEntities = [...new Set(legalEntities)];
         setLegalEntityOptions(uniqueLegalEntities);
-
-        
-        setSelectedLegalEntities(new Set(uniqueLegalEntities)); // select defaul all checkbox
+        setSelectedLegalEntities(new Set(uniqueLegalEntities)); 
+        setLoading(false); 
       } catch (error) {
         console.error('Error reading XLSX file:', error);
+        setLoading(false); 
       }
     };
 
@@ -47,15 +55,19 @@ export const Home = () => {
   }, []);
 
   React.useEffect(() => {
-      const filteredData = originalData.filter(item => {
-      const isFleetMatch = selectedFleet === 'All' || item.Fleet === selectedFleet; //filtering data 
+    if (loading) return; 
+
+    const filteredData = originalData.filter(item => {
+      const isFleetMatch = selectedFleet === 'All' || item.Fleet === selectedFleet;
       const isLegalEntityMatch = selectedLegalEntities.has(item['Legal Entity Name']);
 
       return isFleetMatch && isLegalEntityMatch;
     });
 
     setData(filteredData);
-  }, [selectedFleet, selectedLegalEntities, originalData]);
+  }, [selectedFleet, selectedLegalEntities, originalData, loading]);
+
+
 
   const handleFleetChange = (event) => {
     setSelectedFleet(event.target.value);
@@ -73,48 +85,106 @@ export const Home = () => {
       return newSelection;
     });
   };
-  console.log(data)
+
+  const handleSub = () => {
+    setSub(true)
+    setOver(false)
+  };
+  const handleOverview = () => {
+    setOver(true)
+    setSub(false)
+  };
+
 
   return (
-    <>
+    <Styled.Holder>
       <Header />
-    <Styled.Master>
-       <Styled.Left>
-       <Styled.Title>Fleet</Styled.Title>
-       {fleetOptions.map((fleet, index) => (
-          <Styled.LabelHolderRadio key={index}>
-            <input
-              type="radio"
-              id={`fleet-${index}`}
-              name="fleet"
-              value={fleet}
-              checked={selectedFleet === fleet}
-              onChange={handleFleetChange}
-            />
-            <label htmlFor={`fleet-${index}`}>{fleet}</label>
-          </Styled.LabelHolderRadio>
-        ))}
-        <Styled.Title>Legal Entity Name</Styled.Title>
-        {legalEntityOptions.map((entity, index) => (
-  <Styled.LabelHolderCheck key={index}>
-    <input
-      type="checkbox"
-      id={`legal-entity-${index}`}
-      name="legal-entity"
-      value={entity}
-      checked={selectedLegalEntities.has(entity)}
-      onChange={handleLegalEntityChange}
-    />
-    <label htmlFor={`legal-entity-${index}`}>{entity}</label>
-  </Styled.LabelHolderCheck>
-))}
-       </Styled.Left>
-       <Styled.Right>
-        p
-       </Styled.Right>
-    </Styled.Master>
+      <Styled.Master>
+        <Styled.Left> 
+          <h3>Fleet</h3>
+          {loading ? (
+            <>
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+            </>
+          ) : (
+            fleetOptions.map((fleet, index) => (
+              <div key={index}>
+                <input
+                  type="radio"
+                  id={`fleet-${index}`}
+                  name="fleet"
+                  value={fleet}
+                  checked={selectedFleet === fleet}
+                  onChange={handleFleetChange}
+                />
+                <label htmlFor={`fleet-${index}`}>{fleet}</label>
+              </div>
+            ))
+          )}
+
+          <h3>Legal Entity Name</h3>
+          {loading ? (
+            <>
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+              <Skeleton variant="text" width={200} height={30} />
+            </>
+          ) : (
+            legalEntityOptions.map((entity, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  id={`legal-entity-${index}`}
+                  name="legal-entity"
+                  value={entity}
+                  checked={selectedLegalEntities.has(entity)}
+                  onChange={handleLegalEntityChange}
+                />
+                <label htmlFor={`legal-entity-${index}`}>{entity}</label>
+              </div>
+            ))
+          )}
+
+        </Styled.Left>
+        <Styled.Right>
+          {loading ? (
+            <Styled.Loading></Styled.Loading>
+           ) : (
+            <Styled.ComponentHolderTab>
+              <Styled.LeftComponent active={sub} onClick={handleSub}><h3>Charts Overview</h3>
+              <BarChartSharpIcon style={{ fontSize: 35,}} />
+              </Styled.LeftComponent>
+              <Styled.LeftComponent active={over} onClick={handleOverview}><h3></h3>Subscriptions
+              <PeopleAltSharpIcon style={{ fontSize: 35,}} /> 
+              </Styled.LeftComponent>
+            </Styled.ComponentHolderTab>
+          )}
+          
+          {data && !loading && !sub && (
+  <Styled.Actions>
+        <Subscriptions data={data} country="US" />
+  </Styled.Actions>
+
+  
+)}
 
 
-    </>
+{data && !loading && sub && (
+  <Styled.Actions>
+        <Charts data={data} country="US" />
+  </Styled.Actions>
+
+  
+)}
+
+          
+        </Styled.Right>
+
+      </Styled.Master>
+    </Styled.Holder>
   );
 };

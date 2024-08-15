@@ -32,3 +32,13 @@ export const button = styled.button`
   }
 `
 
+export const Logo = styled.img`
+
+display: flex;
+justify-content: center;
+align-items: center;
+height: 80%;
+align-self: flex-end;
+margin-right: 52rem;
+
+`
