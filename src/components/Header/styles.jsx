@@ -37,7 +37,7 @@ export const Logo = styled.img`
 display: flex;
 justify-content: center;
 align-items: center;
-height: 80%;
+height: 79.9%;
 align-self: flex-end;
 margin-right: 52rem;
 
