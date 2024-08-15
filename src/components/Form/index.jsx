@@ -38,7 +38,7 @@ export const Form = () => {
         event.preventDefault();
         event.preventDefault();
     try {
-      const response = await fetch('../../../public/data/access/access.json');
+      const response = await fetch('/data/access/access.json');
       const data  = await response.json();
       
       const user = data.users.find(user => user.username === username && user.password === password);
